@@ -1,0 +1,193 @@
+{
+  "target": "ProdTaken",
+  "features": [
+    "Age",
+    "TypeofContact",
+    "CityTier",
+    "DurationOfPitch",
+    "Occupation",
+    "Gender",
+    "NumberOfPersonVisiting",
+    "NumberOfFollowups",
+    "ProductPitched",
+    "PreferredPropertyStar",
+    "MaritalStatus",
+    "NumberOfTrips",
+    "Passport",
+    "PitchSatisfactionScore",
+    "OwnCar",
+    "NumberOfChildrenVisiting",
+    "Designation",
+    "MonthlyIncome"
+  ],
+  "post_contact_columns": [
+    "PitchSatisfactionScore",
+    "ProductPitched",
+    "NumberOfFollowups",
+    "DurationOfPitch"
+  ],
+  "category_map": {
+    "Gender": {
+      "Fe Male": "Female"
+    },
+    "Occupation": {
+      "Free Lancer": "Freelancer"
+    }
+  },
+  "columns": {
+    "Age": {
+      "type": "numeric",
+      "min": 18,
+      "max": 61,
+      "default": 36,
+      "integer": true,
+      "binary": false
+    },
+    "TypeofContact": {
+      "type": "categorical",
+      "values": [
+        "Company Invited",
+        "Self Enquiry"
+      ],
+      "default": "Self Enquiry"
+    },
+    "CityTier": {
+      "type": "numeric",
+      "min": 1,
+      "max": 3,
+      "default": 1,
+      "integer": true,
+      "binary": false
+    },
+    "DurationOfPitch": {
+      "type": "numeric",
+      "min": 5,
+      "max": 127,
+      "default": 14,
+      "integer": true,
+      "binary": false
+    },
+    "Occupation": {
+      "type": "categorical",
+      "values": [
+        "Freelancer",
+        "Large Business",
+        "Salaried",
+        "Small Business"
+      ],
+      "default": "Salaried"
+    },
+    "Gender": {
+      "type": "categorical",
+      "values": [
+        "Female",
+        "Male"
+      ],
+      "default": "Male"
+    },
+    "NumberOfPersonVisiting": {
+      "type": "numeric",
+      "min": 1,
+      "max": 5,
+      "default": 3,
+      "integer": true,
+      "binary": false
+    },
+    "NumberOfFollowups": {
+      "type": "numeric",
+      "min": 1,
+      "max": 6,
+      "default": 4,
+      "integer": true,
+      "binary": false
+    },
+    "ProductPitched": {
+      "type": "categorical",
+      "values": [
+        "Basic",
+        "Deluxe",
+        "King",
+        "Standard",
+        "Super Deluxe"
+      ],
+      "default": "Basic"
+    },
+    "PreferredPropertyStar": {
+      "type": "numeric",
+      "min": 3,
+      "max": 5,
+      "default": 3,
+      "integer": true,
+      "binary": false
+    },
+    "MaritalStatus": {
+      "type": "categorical",
+      "values": [
+        "Divorced",
+        "Married",
+        "Single",
+        "Unmarried"
+      ],
+      "default": "Married"
+    },
+    "NumberOfTrips": {
+      "type": "numeric",
+      "min": 1,
+      "max": 22,
+      "default": 3,
+      "integer": true,
+      "binary": false
+    },
+    "Passport": {
+      "type": "numeric",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "binary": true
+    },
+    "PitchSatisfactionScore": {
+      "type": "numeric",
+      "min": 1,
+      "max": 5,
+      "default": 3,
+      "integer": true,
+      "binary": false
+    },
+    "OwnCar": {
+      "type": "numeric",
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "integer": true,
+      "binary": true
+    },
+    "NumberOfChildrenVisiting": {
+      "type": "numeric",
+      "min": 0,
+      "max": 3,
+      "default": 1,
+      "integer": true,
+      "binary": false
+    },
+    "Designation": {
+      "type": "categorical",
+      "values": [
+        "AVP",
+        "Executive",
+        "Manager",
+        "Senior Manager",
+        "VP"
+      ],
+      "default": "Executive"
+    },
+    "MonthlyIncome": {
+      "type": "numeric",
+      "min": 1000,
+      "max": 38304,
+      "default": 22403,
+      "integer": true,
+      "binary": false
+    }
+  }
+}

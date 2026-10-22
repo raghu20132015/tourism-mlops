@@ -1,0 +1,47 @@
+# Central configuration for the Tourism Package Prediction pipeline.
+# Paths are relative to the tourism_project/ folder. --data on the command line overrides data.raw_path.
+
+data:
+  raw_path: data/Tourism.csv
+  processed_dir: data/processed
+
+paths:
+  artifacts_dir: artifacts
+  model_path: model/model.joblib
+
+target: ProdTaken
+id_columns: [CustomerID]
+
+features:
+  # Only known after the customer has been contacted; excluded to predict *before* contact.
+  exclude_post_contact: true
+  post_contact_columns:
+    - PitchSatisfactionScore
+    - ProductPitched
+    - NumberOfFollowups
+    - DurationOfPitch
+
+cleaning:
+  # Fixes for spelling issues found in the categorical columns.
+  category_map:
+    Gender:
+      Fe Male: Female
+    Occupation:
+      Free Lancer: Freelancer
+  drop_duplicate_rows: true
+
+split:
+  test_size: 0.2
+  random_state: 42
+
+training:
+  cv_folds: 5
+  n_iter: 20            # RandomizedSearchCV candidates per model
+  scoring: roc_auc      # model selection metric (cross-validated, never the test set)
+  n_jobs: -1
+  threshold: 0.5        # probability cut-off for "Will Buy"
+
+tracking:
+  experiment: tourism-wellness-package
+  db_path: mlflow/mlflow.db
+  artifact_dir: mlflow/artifacts

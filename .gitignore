@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+/tourism.csv
+tourism_project/data/processed/
+tourism_project/mlflow/
+tourism_project/artifacts/data_report.json

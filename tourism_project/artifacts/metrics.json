@@ -1,0 +1,182 @@
+{
+  "selected_model": "Bagging",
+  "selection_metric": "cv_roc_auc",
+  "feature_set": "pre-contact only",
+  "features": [
+    "Age",
+    "TypeofContact",
+    "CityTier",
+    "Occupation",
+    "Gender",
+    "NumberOfPersonVisiting",
+    "PreferredPropertyStar",
+    "MaritalStatus",
+    "NumberOfTrips",
+    "Passport",
+    "OwnCar",
+    "NumberOfChildrenVisiting",
+    "Designation",
+    "MonthlyIncome"
+  ],
+  "threshold": 0.5,
+  "train_rows": 3208,
+  "test_rows": 803,
+  "mlflow_run_id": "bcc4d847c17d4508bc66e59c33b0cd93",
+  "models": {
+    "DecisionTree": {
+      "best_params": {
+        "min_samples_split": 2,
+        "min_samples_leaf": 10,
+        "max_depth": 15,
+        "criterion": "gini"
+      },
+      "cv_score": 0.8062,
+      "train": {
+        "accuracy": 0.8264,
+        "precision": 0.5284,
+        "recall": 0.9321,
+        "f1": 0.6745,
+        "roc_auc": 0.9436
+      },
+      "test": {
+        "accuracy": 0.7235,
+        "precision": 0.3799,
+        "recall": 0.6839,
+        "f1": 0.4885,
+        "roc_auc": 0.7831
+      },
+      "fit_seconds": 9.5
+    },
+    "Bagging": {
+      "best_params": {
+        "n_estimators": 100,
+        "max_samples": 1.0,
+        "max_features": 0.6,
+        "bootstrap": false
+      },
+      "cv_score": 0.9362,
+      "train": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "roc_auc": 1.0
+      },
+      "test": {
+        "accuracy": 0.9116,
+        "precision": 0.9118,
+        "recall": 0.6,
+        "f1": 0.7237,
+        "roc_auc": 0.9558
+      },
+      "fit_seconds": 62.5
+    },
+    "RandomForest": {
+      "best_params": {
+        "n_estimators": 500,
+        "min_samples_leaf": 1,
+        "max_features": "log2",
+        "max_depth": null
+      },
+      "cv_score": 0.924,
+      "train": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "roc_auc": 1.0
+      },
+      "test": {
+        "accuracy": 0.8854,
+        "precision": 0.8706,
+        "recall": 0.4774,
+        "f1": 0.6167,
+        "roc_auc": 0.9226
+      },
+      "fit_seconds": 43.5
+    },
+    "AdaBoost": {
+      "best_params": {
+        "n_estimators": 300,
+        "learning_rate": 1.0
+      },
+      "cv_score": 0.8118,
+      "train": {
+        "accuracy": 0.7556,
+        "precision": 0.424,
+        "recall": 0.7431,
+        "f1": 0.5399,
+        "roc_auc": 0.8299
+      },
+      "test": {
+        "accuracy": 0.736,
+        "precision": 0.3925,
+        "recall": 0.671,
+        "f1": 0.4952,
+        "roc_auc": 0.7881
+      },
+      "fit_seconds": 29.2
+    },
+    "GradientBoosting": {
+      "best_params": {
+        "subsample": 1.0,
+        "n_estimators": 200,
+        "max_depth": 5,
+        "learning_rate": 0.1
+      },
+      "cv_score": 0.9,
+      "train": {
+        "accuracy": 0.9888,
+        "precision": 0.9478,
+        "recall": 0.9968,
+        "f1": 0.9717,
+        "roc_auc": 0.9997
+      },
+      "test": {
+        "accuracy": 0.8979,
+        "precision": 0.7517,
+        "recall": 0.7032,
+        "f1": 0.7267,
+        "roc_auc": 0.9039
+      },
+      "fit_seconds": 44.9
+    },
+    "XGBoost": {
+      "best_params": {
+        "subsample": 0.7,
+        "n_estimators": 300,
+        "min_child_weight": 1,
+        "max_depth": 8,
+        "learning_rate": 0.05,
+        "colsample_bytree": 0.6
+      },
+      "cv_score": 0.9128,
+      "train": {
+        "accuracy": 0.9966,
+        "precision": 0.9825,
+        "recall": 1.0,
+        "f1": 0.9912,
+        "roc_auc": 1.0
+      },
+      "test": {
+        "accuracy": 0.9078,
+        "precision": 0.7914,
+        "recall": 0.7097,
+        "f1": 0.7483,
+        "roc_auc": 0.9239
+      },
+      "fit_seconds": 13.7
+    }
+  },
+  "leakage_check": {
+    "model": "Bagging",
+    "feature_set": "all features",
+    "test": {
+      "accuracy": 0.9315,
+      "precision": 0.9237,
+      "recall": 0.7032,
+      "f1": 0.7985,
+      "roc_auc": 0.9819
+    }
+  }
+}

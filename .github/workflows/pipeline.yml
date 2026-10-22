@@ -1,0 +1,136 @@
+name: Tourism MLOps Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tourism_project/data/**"
+      - "tourism_project/model_building/**"
+      - "tourism_project/config.yaml"
+      - "tourism_project/deployment/**"
+      - "requirements.txt"
+      - ".github/workflows/pipeline.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tourism-pipeline-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  data-registration:
+    name: 1. Data registration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Validate and register Tourism.csv
+        run: python tourism_project/model_building/data_registration.py
+      - name: Upload data report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-report
+          path: tourism_project/artifacts/data_report.json
+
+  data-preparation:
+    name: 2. Data preparation
+    needs: data-registration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Clean data and create train/test split
+        run: python tourism_project/model_building/data_preparation.py
+      - name: Upload train/test split for the training job
+        uses: actions/upload-artifact@v4
+        with:
+          name: train-test-split
+          path: |
+            tourism_project/data/processed/
+            tourism_project/artifacts/schema.json
+
+  model-training:
+    name: 3. Model training & tracking
+    needs: data-preparation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Download train/test split
+        uses: actions/download-artifact@v4
+        with:
+          name: train-test-split
+          path: tourism_project
+      - name: Tune, evaluate and track models (MLflow)
+        run: python tourism_project/model_building/train.py
+      - name: Upload model, metrics and MLflow runs
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-and-experiments
+          path: |
+            tourism_project/model/
+            tourism_project/artifacts/
+            tourism_project/mlflow/
+      - name: Commit and push the trained model to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tourism_project/model/model.joblib tourism_project/artifacts/*.json tourism_project/artifacts/*.csv
+          if git diff --cached --quiet; then
+            echo "Model unchanged - nothing to commit."
+            exit 0
+          fi
+          git commit -m "ci: retrain model (${GITHUB_SHA::7}) [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+  deploy-hf-space:
+    name: 4. Deploy to Hugging Face Space (optional)
+    needs: model-training
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_SPACE: ${{ vars.HF_SPACE }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main   # includes the model committed by the previous job
+      - name: Skip when Hugging Face is not configured
+        if: env.HF_TOKEN == '' || env.HF_SPACE == ''
+        run: echo "HF_TOKEN secret or HF_SPACE variable not set - skipping Hugging Face deployment."
+      - name: Build Space bundle
+        if: env.HF_TOKEN != '' && env.HF_SPACE != ''
+        run: |
+          mkdir -p space/model space/artifacts
+          cp tourism_project/deployment/* space/
+          cp tourism_project/model/model.joblib space/model/
+          cp tourism_project/artifacts/schema.json tourism_project/artifacts/metrics.json space/artifacts/
+          printf -- "---\ntitle: Wellness Package Predictor\nsdk: docker\napp_port: 8501\n---\n" > space/README.md
+      - name: Upload to the Space
+        if: env.HF_TOKEN != '' && env.HF_SPACE != ''
+        run: |
+          pip install huggingface_hub
+          python -c "import os; from huggingface_hub import HfApi; HfApi(token=os.environ['HF_TOKEN']).upload_folder(folder_path='space', repo_id=os.environ['HF_SPACE'], repo_type='space', commit_message='Deploy from GitHub Actions')"

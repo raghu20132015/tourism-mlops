@@ -1,0 +1,8 @@
+# Dependencies for the GitHub Actions pipeline (data registration, preparation, training).
+pandas==2.2.3
+numpy==2.1.3
+scikit-learn==1.5.2
+xgboost==2.1.3
+joblib==1.4.2
+pyyaml==6.0.2
+mlflow==3.17.2
