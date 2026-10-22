@@ -21,7 +21,7 @@
   "threshold": 0.5,
   "train_rows": 3208,
   "test_rows": 803,
-  "mlflow_run_id": "bcc4d847c17d4508bc66e59c33b0cd93",
+  "mlflow_run_id": "b1bd96fefbda4782a1599f36e6c229fc",
   "models": {
     "DecisionTree": {
       "best_params": {
@@ -45,7 +45,7 @@
         "f1": 0.4885,
         "roc_auc": 0.7831
       },
-      "fit_seconds": 9.5
+      "fit_seconds": 3.8
     },
     "Bagging": {
       "best_params": {
@@ -69,7 +69,7 @@
         "f1": 0.7237,
         "roc_auc": 0.9558
       },
-      "fit_seconds": 62.5
+      "fit_seconds": 29.1
     },
     "RandomForest": {
       "best_params": {
@@ -93,7 +93,7 @@
         "f1": 0.6167,
         "roc_auc": 0.9226
       },
-      "fit_seconds": 43.5
+      "fit_seconds": 24.9
     },
     "AdaBoost": {
       "best_params": {
@@ -115,7 +115,7 @@
         "f1": 0.4952,
         "roc_auc": 0.7881
       },
-      "fit_seconds": 29.2
+      "fit_seconds": 16.7
     },
     "GradientBoosting": {
       "best_params": {
@@ -137,9 +137,9 @@
         "precision": 0.7517,
         "recall": 0.7032,
         "f1": 0.7267,
-        "roc_auc": 0.9039
+        "roc_auc": 0.9041
       },
-      "fit_seconds": 44.9
+      "fit_seconds": 27.3
     },
     "XGBoost": {
       "best_params": {
@@ -150,22 +150,22 @@
         "learning_rate": 0.05,
         "colsample_bytree": 0.6
       },
-      "cv_score": 0.9128,
+      "cv_score": 0.907,
       "train": {
-        "accuracy": 0.9966,
-        "precision": 0.9825,
+        "accuracy": 0.9972,
+        "precision": 0.9857,
         "recall": 1.0,
-        "f1": 0.9912,
+        "f1": 0.9928,
         "roc_auc": 1.0
       },
       "test": {
-        "accuracy": 0.9078,
-        "precision": 0.7914,
-        "recall": 0.7097,
-        "f1": 0.7483,
-        "roc_auc": 0.9239
+        "accuracy": 0.9041,
+        "precision": 0.791,
+        "recall": 0.6839,
+        "f1": 0.7336,
+        "roc_auc": 0.9224
       },
-      "fit_seconds": 13.7
+      "fit_seconds": 6.8
     }
   },
   "leakage_check": {
